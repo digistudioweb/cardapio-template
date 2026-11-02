@@ -11,7 +11,9 @@ import {
   acompanharCategoriaAtual,
 } from './ui-cardapio.js';
 import { iniciarPainelItem, abrirPainelItem } from './ui-item.js';
-import { precoUnitario } from './pedido.js';
+import { descreverLinha } from './pedido.js';
+import * as carrinho from './carrinho.js';
+import { iniciarUiCarrinho, avisar } from './ui-carrinho.js';
 
 async function iniciar() {
   let cardapio;
@@ -36,9 +38,11 @@ async function iniciar() {
 
   acompanharCategoriaAtual();
 
-  // TODO etapa 3: trocar pelo carrinho de verdade.
-  iniciarPainelItem(cardapio, (linha) => {
-    console.info('[carrinho] adicionado', linha, 'unitário (centavos):', precoUnitario(linha, cardapio));
+  carrinho.iniciarCarrinho(cardapio);
+  iniciarUiCarrinho(cardapio);
+  iniciarPainelItem(cardapio, (selecao) => {
+    carrinho.adicionar(selecao);
+    avisar(`${descreverLinha(selecao, cardapio).titulo} foi para o carrinho`);
   });
 
   // Um ouvinte só para todos os cards (delegação): funciona para qualquer quantidade de itens.

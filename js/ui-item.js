@@ -1,9 +1,8 @@
 // Painel que abre ao tocar num item: escolhas, meia a meia, adicionais, observação e quantidade.
-//
-// Usa <dialog> com showModal(): o navegador já fecha com Esc, prende o foco dentro do
-// painel e deixa o resto da página inerte. Só precisamos devolver o foco ao card ao fechar.
+// Fechar com Esc, tocar no fundo e devolver o foco ao card ficam em dialogo.js.
 
 import { formatarReais } from './dinheiro.js';
+import { prepararDialogo, abrirDialogo } from './dialogo.js';
 import { escapar, normalizarBusca } from './html.js';
 import {
   novaSelecao,
@@ -23,12 +22,12 @@ let aoAdicionar;
 let item = null;
 let selecao = null;
 let modoMeia = false;
-let origemDoFoco = null;
 
 export function iniciarPainelItem(dadosDoCardapio, callbackAdicionar) {
   cardapio = dadosDoCardapio;
   aoAdicionar = callbackAdicionar;
   dialogo = document.querySelector('[data-painel-item]');
+  prepararDialogo(dialogo);
 
   // Um ouvinte por tipo de evento no painel inteiro (delegação), em vez de um por botão:
   // o conteúdo é redesenhado a cada item aberto e os ouvintes continuam valendo.
@@ -40,7 +39,6 @@ export function iniciarPainelItem(dadosDoCardapio, callbackAdicionar) {
     // Enter na busca de sabores não deve "enviar" o painel.
     if (evento.key === 'Enter' && evento.target.matches('[data-busca]')) evento.preventDefault();
   });
-  dialogo.addEventListener('close', () => origemDoFoco?.focus());
 }
 
 export function abrirPainelItem(chave, elementoOrigem) {
@@ -48,11 +46,10 @@ export function abrirPainelItem(chave, elementoOrigem) {
   if (!item) return;
   selecao = novaSelecao(item);
   modoMeia = false;
-  origemDoFoco = elementoOrigem;
 
   dialogo.innerHTML = htmlPainel();
   atualizar();
-  dialogo.showModal();
+  abrirDialogo(dialogo, elementoOrigem);
 }
 
 /* ---------------------------------------------------------------------------
@@ -225,12 +222,6 @@ function htmlGrupoAdicional(grupo) {
    --------------------------------------------------------------------------- */
 
 function aoClicar(evento) {
-  // Clique no fundo escuro (fora do conteúdo) fecha o painel.
-  if (evento.target === dialogo) {
-    dialogo.close();
-    return;
-  }
-
   const botao = evento.target.closest('[data-acao]');
   if (!botao) return;
 

@@ -46,8 +46,45 @@
     </p>
   </footer>
 
+  <!-- Barra fixa do carrinho: só aparece com pelo menos 1 item. -->
+  <div class="barra-carrinho" data-barra-carrinho hidden>
+    <p class="aviso" data-aviso role="status"></p>
+    <button type="button" class="botao-primario barra-carrinho__botao" data-abrir-carrinho aria-haspopup="dialog">
+      <span class="barra-carrinho__qtd" data-carrinho-qtd>0 itens</span>
+      <span>Ver carrinho</span>
+      <span data-carrinho-total>R$ 0,00</span>
+    </button>
+  </div>
+
   <!-- Painel do item: o conteúdo é montado por js/ui-item.js a cada item aberto. -->
   <dialog class="painel" data-painel-item aria-labelledby="painel-item-titulo"></dialog>
+
+  <!-- Painel do carrinho: a lista é montada por js/ui-carrinho.js. -->
+  <dialog class="painel" data-painel-carrinho aria-labelledby="carrinho-titulo">
+    <div class="painel__form">
+      <button type="button" class="painel__fechar" data-acao="fechar" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="painel__corpo">
+        <div class="painel__intro">
+          <h2 class="painel__titulo" id="carrinho-titulo" tabindex="-1" autofocus>Seu pedido</h2>
+        </div>
+        <ul class="linhas" data-linhas role="list"></ul>
+        <p class="carrinho-vazio" data-vazio>Seu carrinho está vazio. Escolha algo no cardápio.</p>
+      </div>
+      <div class="painel__rodape painel__rodape--resumo" data-resumo>
+        <div class="resumo__linha">
+          <span>Subtotal</span>
+          <strong data-subtotal>R$ 0,00</strong>
+        </div>
+        <p class="resumo__nota" data-nota-entrega></p>
+        <div class="resumo__botoes">
+          <button type="button" class="botao-secundario" data-acao="fechar">Adicionar mais itens</button>
+          <button type="button" class="botao-primario" data-acao="continuar" data-continuar>Continuar</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
 
   <noscript>
     <p class="aviso-erro">Este cardápio precisa de JavaScript ativado para funcionar.</p>

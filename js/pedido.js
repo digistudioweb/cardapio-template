@@ -81,6 +81,33 @@ export function validarSelecao(selecao, cardapio, { meia = false } = {}) {
   return erros;
 }
 
+// Nome e detalhes de uma linha em texto, usados no carrinho e na mensagem do WhatsApp.
+// { titulo: '½ Marguerita + ½ Costela com barbecue',
+//   detalhes: ['Tamanho: Grande (8 fatias)', 'Borda recheada: Requeijão cremoso', '+ 2x Bacon extra'],
+//   observacao: 'sem cebola' }
+export function descreverLinha(selecao, cardapio) {
+  const item = cardapio.buscarItem(selecao.chave);
+  const segundo = selecao.segundoSabor ? cardapio.buscarItem(selecao.segundoSabor) : null;
+  const titulo = segundo ? `½ ${item.nome} + ½ ${segundo.nome}` : item.nome;
+
+  const detalhes = [];
+  for (const grupo of item.escolhas) {
+    const nomes = (selecao.escolhas[grupo.id] ?? [])
+      .map((id) => buscarOpcao(grupo, id))
+      .filter(Boolean)
+      .map((opcao) => (opcao.detalhe ? `${opcao.nome} (${opcao.detalhe})` : opcao.nome));
+    if (nomes.length > 0) detalhes.push(`${grupo.nome}: ${nomes.join(', ')}`);
+  }
+  for (const grupo of item.adicionais) {
+    for (const [id, quantidade] of Object.entries(selecao.adicionais[grupo.id] ?? {})) {
+      const opcao = buscarOpcao(grupo, id);
+      if (opcao) detalhes.push(`+ ${quantidade}x ${opcao.nome}`);
+    }
+  }
+
+  return { titulo, detalhes, observacao: selecao.observacao };
+}
+
 // Texto curto da regra do grupo, mostrado ao lado do título.
 export function regraDoGrupo(grupo) {
   const min = grupo.min ?? 0;
