@@ -2,16 +2,7 @@
 
 import { formatarReais } from './dinheiro.js';
 import { resumirHorarios } from './horario.js';
-
-// Os textos vêm do JSON (e na fase 2, de uma planilha que qualquer pessoa edita).
-// Escapar evita que um "<" num nome de pizza quebre o HTML ou injete código.
-function escapar(texto = '') {
-  return String(texto)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
-}
+import { escapar } from './html.js';
 
 const $ = (seletor) => document.querySelector(seletor);
 
@@ -86,7 +77,7 @@ function htmlItem(item) {
       <article class="item">
         <div class="item__texto">
           <h3 class="item__nome">
-            <button type="button" class="item__botao" data-item="${escapar(item.categoriaId)}/${escapar(item.id)}">${escapar(item.nome)}</button>
+            <button type="button" class="item__botao" data-item="${escapar(item.chave)}" aria-haspopup="dialog">${escapar(item.nome)}</button>
           </h3>
           <p class="item__descricao">${escapar(item.descricao)}</p>
           <p class="item__preco">${prefixo}${formatarReais(item.precoMinimo)}</p>

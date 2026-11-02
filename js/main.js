@@ -10,6 +10,8 @@ import {
   renderizarCreditos,
   acompanharCategoriaAtual,
 } from './ui-cardapio.js';
+import { iniciarPainelItem, abrirPainelItem } from './ui-item.js';
+import { precoUnitario } from './pedido.js';
 
 async function iniciar() {
   let cardapio;
@@ -33,6 +35,17 @@ async function iniciar() {
   if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
 
   acompanharCategoriaAtual();
+
+  // TODO etapa 3: trocar pelo carrinho de verdade.
+  iniciarPainelItem(cardapio, (linha) => {
+    console.info('[carrinho] adicionado', linha, 'unitário (centavos):', precoUnitario(linha, cardapio));
+  });
+
+  // Um ouvinte só para todos os cards (delegação): funciona para qualquer quantidade de itens.
+  document.querySelector('[data-secoes]').addEventListener('click', (evento) => {
+    const botao = evento.target.closest('[data-item]');
+    if (botao) abrirPainelItem(botao.dataset.item, botao);
+  });
 
   // O status muda sozinho com o tempo (abre às 17:30, fecha às 01:30),
   // então recalculamos a cada minuto para quem deixa a página aberta.

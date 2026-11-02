@@ -23,6 +23,7 @@
   "grupos": {
     "tam-tradicional": {
       "nome": "Tamanho",
+      "tamanho": true,
       "min": 1,
       "max": 1,
       "opcoes": [
@@ -34,6 +35,7 @@
     },
     "tam-especial": {
       "nome": "Tamanho",
+      "tamanho": true,
       "min": 1,
       "max": 1,
       "opcoes": [
@@ -45,6 +47,7 @@
     },
     "tam-gourmet": {
       "nome": "Tamanho",
+      "tamanho": true,
       "min": 1,
       "max": 1,
       "opcoes": [
@@ -56,6 +59,7 @@
     },
     "tam-premium": {
       "nome": "Tamanho",
+      "tamanho": true,
       "min": 1,
       "max": 1,
       "opcoes": [
@@ -67,6 +71,7 @@
     },
     "tam-doce": {
       "nome": "Tamanho",
+      "tamanho": true,
       "min": 1,
       "max": 1,
       "opcoes": [

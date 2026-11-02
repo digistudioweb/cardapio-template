@@ -5,7 +5,8 @@
 :root {
   --cor-fundo: #FFF8EF;            /* creme */
   --cor-superficie: #FFFFFF;
-  --cor-borda: #EADBC8;
+  --cor-borda: #EADBC8;            /* bordas decorativas (cards) */
+  --cor-borda-campo: #9C836F;      /* bordas de campos: 3:1, mínimo para componentes */
   --cor-texto: #2B1A12;            /* marrom escuro: 15:1 no creme */
   --cor-texto-suave: #6B4F3F;      /* 7:1 no creme */
   --cor-primaria: #B42318;         /* vermelho tomate: 6.5:1 com texto branco */
@@ -81,6 +82,83 @@ a { color: var(--cor-primaria); }
 }
 
 [role="list"] { list-style: none; margin: 0; padding: 0; }
+
+/* Garante que o atributo hidden esconda mesmo elementos com display definido no CSS. */
+[hidden] { display: none !important; }
+
+/* Escondido na tela, mas lido por leitores de tela. */
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Peças reutilizáveis: campo, botão principal e contador (− 1 +)
+   ========================================================================== */
+.campo {
+  width: 100%;
+  min-height: var(--altura-toque);
+  padding: var(--espaco-2) var(--espaco-3);
+  border: 1px solid var(--cor-borda-campo);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  font: inherit;
+  resize: vertical;
+}
+
+.botao-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  min-height: 48px;
+  padding: 0 var(--espaco-5);
+  border: 0;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-primaria);
+  color: var(--cor-sobre-primaria);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.botao-primario:hover { background: var(--cor-primaria-escura); }
+
+.contador {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+}
+
+.contador__botao {
+  width: var(--altura-toque);
+  height: var(--altura-toque);
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--cor-primaria);
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.contador__botao:disabled {
+  color: var(--cor-borda-campo);
+  cursor: not-allowed;
+}
+
+.contador__valor {
+  min-width: 2ch;
+  font-weight: 600;
+  text-align: center;
+}
 
 .pular {
   position: absolute;
@@ -338,6 +416,214 @@ a { color: var(--cor-primaria); }
 }
 
 /* ==========================================================================
+   Painel do item (<dialog>): no celular sobe de baixo; no desktop fica no centro
+   ========================================================================== */
+
+/* Trava a rolagem da página de trás enquanto um painel está aberto. */
+html:has(dialog[open]) { overflow: hidden; }
+
+.painel {
+  width: 100%;
+  max-width: 100%;
+  max-height: 92dvh;
+  margin: auto 0 0;               /* encosta embaixo da tela */
+  padding: 0;
+  border: 0;
+  border-radius: 16px 16px 0 0;
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+
+.painel::backdrop { background: rgb(0 0 0 / 0.55); }
+
+.painel__form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
+}
+
+.painel__corpo {
+  overflow-y: auto;
+  overscroll-behavior: contain;    /* rolar até o fim não "puxa" a página de trás */
+}
+
+.painel__fechar {
+  position: absolute;
+  top: var(--espaco-3);
+  right: var(--espaco-3);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--altura-toque);
+  height: var(--altura-toque);
+  border: 0;
+  border-radius: 50%;
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+}
+
+.painel__foto {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.painel__intro {
+  padding: var(--espaco-4);
+  /* Sem foto, o título não pode ficar embaixo do botão de fechar. */
+  padding-right: calc(var(--altura-toque) + var(--espaco-4));
+}
+
+.painel__titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.painel__titulo:focus { outline: none; } /* recebe foco só para orientar o leitor de tela */
+
+.painel__descricao {
+  margin-top: var(--espaco-1);
+  color: var(--cor-texto-suave);
+}
+
+.grupo {
+  min-width: 0;
+  margin: 8px 0 0;
+  padding: var(--espaco-4);
+  border: 0;
+  /* Faixa separando os grupos. Não usamos border-top porque a <legend> "corta" a borda do fieldset. */
+  box-shadow: 0 -8px 0 var(--cor-fundo);
+}
+
+.grupo__titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+  width: 100%;
+  margin-bottom: var(--espaco-2);
+  padding: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.grupo__regra {
+  flex-shrink: 0;
+  padding: 0 var(--espaco-3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-fundo);
+  color: var(--cor-texto-suave);
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.grupo__erro {
+  margin-bottom: var(--espaco-2);
+  color: var(--cor-fechado-texto);
+  font-weight: 600;
+}
+.grupo__erro:empty { display: none; }
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-height: 56px;
+  padding: var(--espaco-2) 0;
+  border-bottom: 1px solid var(--cor-borda);
+  cursor: pointer;
+}
+.opcao:last-child { border-bottom: 0; }
+
+.opcao input {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--cor-primaria);
+}
+
+.opcao:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.opcao__nome {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.opcao__detalhe {
+  color: var(--cor-texto-suave);
+  font-weight: 400;
+}
+
+.opcao__preco {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.meia {
+  min-width: 0;
+  margin: var(--espaco-3) 0 0;
+  padding: var(--espaco-3);
+  border: 0;
+  border-radius: var(--raio);
+  background: var(--cor-fundo);
+}
+
+.meia__titulo {
+  padding: 0;
+  font-weight: 600;
+}
+
+.meia__busca {
+  display: block;
+  margin: var(--espaco-2) 0;
+}
+
+.meia__categoria-nome {
+  margin-top: var(--espaco-3);
+  color: var(--cor-primaria-escura);
+  font-family: var(--fonte-titulo);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.meia__vazio {
+  padding: var(--espaco-3) 0;
+  color: var(--cor-texto-suave);
+}
+
+.adicional {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  padding: var(--espaco-2) 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+.adicional:last-child { border-bottom: 0; }
+
+.painel__rodape {
+  display: flex;
+  gap: var(--espaco-3);
+  padding: var(--espaco-3) var(--espaco-4);
+  /* Respeita a barra de gestos do iPhone. */
+  padding-bottom: calc(var(--espaco-3) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
+}
+
+.painel__adicionar { flex: 1; }
+
+/* ==========================================================================
    Rodapé
    ========================================================================== */
 .rodape {
@@ -379,6 +665,16 @@ a { color: var(--cor-primaria); }
   .secao__foto {
     aspect-ratio: 16 / 4;
   }
+
+  .painel {
+    width: min(560px, 100% - 2rem);
+    max-height: 88dvh;
+    margin: auto;
+    border-radius: 16px;
+  }
+  .painel__form { max-height: 88dvh; }
+  /* Foto mais baixa no desktop, para sobrar altura para as opções. */
+  .painel__foto { aspect-ratio: 16 / 6; }
 }
 
 @media (min-width: 1024px) {

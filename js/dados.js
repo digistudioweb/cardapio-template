@@ -37,6 +37,8 @@ function prepararCardapio(bruto) {
 
       return {
         ...item,
+        // "categoria/item": o mesmo id de item pode existir em categorias diferentes.
+        chave: `${categoria.id}/${item.id}`,
         categoriaId: categoria.id,
         // Sem foto própria, o card fica só com texto (a foto da categoria já aparece
         // no topo da seção); o painel do item usa a da categoria como reserva.
@@ -51,7 +53,16 @@ function prepararCardapio(bruto) {
     }),
   }));
 
-  return { restaurante, categorias: categoriasProntas, creditos };
+  const itensPorChave = new Map(
+    categoriasProntas.flatMap((c) => c.itens.map((item) => [item.chave, item])),
+  );
+
+  return {
+    restaurante,
+    categorias: categoriasProntas,
+    creditos,
+    buscarItem: (chave) => itensPorChave.get(chave) ?? null,
+  };
 }
 
 // Menor valor possível do item: preço base + as opções mais baratas das escolhas obrigatórias.
