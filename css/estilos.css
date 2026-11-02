@@ -1,0 +1,392 @@
+/* ==========================================================================
+   Tokens: trocar de cliente = mexer só neste bloco (cores, fontes, medidas).
+   Contrastes conferidos para texto normal (mínimo 4.5:1).
+   ========================================================================== */
+:root {
+  --cor-fundo: #FFF8EF;            /* creme */
+  --cor-superficie: #FFFFFF;
+  --cor-borda: #EADBC8;
+  --cor-texto: #2B1A12;            /* marrom escuro: 15:1 no creme */
+  --cor-texto-suave: #6B4F3F;      /* 7:1 no creme */
+  --cor-primaria: #B42318;         /* vermelho tomate: 6.5:1 com texto branco */
+  --cor-primaria-escura: #8A1A12;
+  --cor-sobre-primaria: #FFFFFF;
+  --cor-destaque: #F28C28;         /* laranja: só decoração, nunca texto em fundo claro */
+  --cor-aberto-fundo: #E6F4EA;
+  --cor-aberto-texto: #1E6B34;
+  --cor-fechado-fundo: #FDECEA;
+  --cor-fechado-texto: #A11D14;
+  --cor-foco: #1A5FB4;
+  --cor-whatsapp: #25D366;         /* só no botão de enviar pedido */
+  --cor-sobre-whatsapp: #0B2E17;   /* texto escuro: branco no verde reprova (2:1) */
+
+  --fonte-titulo: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --fonte-texto: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 0.75rem;
+  --espaco-4: 1rem;
+  --espaco-5: 1.5rem;
+  --espaco-6: 2rem;
+
+  --raio: 12px;
+  --raio-pilula: 999px;
+  --sombra: 0 2px 10px rgb(43 26 18 / 0.08);
+  --largura-max: 1120px;
+  --altura-toque: 44px;            /* área mínima de toque */
+  --altura-categorias: 4rem;       /* usado no scroll-margin das seções */
+}
+
+/* ==========================================================================
+   Base (mobile first: estes estilos são para o celular; telas maiores
+   ganham ajustes nos @media do final)
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte-texto);
+  font-size: 1rem;                 /* 16px: nunca menos que isso no celular */
+  line-height: 1.5;
+}
+
+/* height: auto deixa o aspect-ratio do CSS valer mesmo com width/height no HTML
+   (os atributos ficam lá só para o navegador reservar o espaço antes da foto carregar). */
+img { display: block; max-width: 100%; height: auto; }
+
+h1, h2, h3 {
+  font-family: var(--fonte-titulo);
+  line-height: 1.15;
+  margin: 0;
+}
+
+p { margin: 0; }
+
+a { color: var(--cor-primaria); }
+
+:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+[role="list"] { list-style: none; margin: 0; padding: 0; }
+
+.pular {
+  position: absolute;
+  left: var(--espaco-4);
+  top: -100px;
+  z-index: 100;
+  padding: var(--espaco-3) var(--espaco-4);
+  background: var(--cor-superficie);
+  border-radius: var(--raio);
+  font-weight: 600;
+}
+.pular:focus { top: var(--espaco-4); }
+
+/* ==========================================================================
+   Topo
+   ========================================================================== */
+.topo__capa {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+.topo__info {
+  position: relative;
+  margin: -2.5rem var(--espaco-4) 0;
+  padding: var(--espaco-6) var(--espaco-4) var(--espaco-4);
+  background: var(--cor-superficie);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  text-align: center;
+}
+
+.topo__marca {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  translate: -50% 0;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  border: 3px solid var(--cor-superficie);
+  border-radius: 50%;
+  background: var(--cor-primaria);
+  color: var(--cor-sobre-primaria);
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.topo__nome {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.topo__slogan {
+  color: var(--cor-texto-suave);
+}
+
+.status {
+  display: inline-block;
+  margin-top: var(--espaco-3);
+  padding: var(--espaco-1) var(--espaco-3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-borda);
+  font-weight: 600;
+}
+.status--aberto { background: var(--cor-aberto-fundo); color: var(--cor-aberto-texto); }
+.status--fechado { background: var(--cor-fechado-fundo); color: var(--cor-fechado-texto); }
+
+.topo__detalhes {
+  display: grid;
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-3);
+  color: var(--cor-texto-suave);
+}
+
+/* ==========================================================================
+   Barra de categorias (fixa no topo ao rolar)
+   ========================================================================== */
+.categorias {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-top: var(--espaco-4);
+  background: var(--cor-fundo);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.categorias ul {
+  display: flex;
+  gap: var(--espaco-2);
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: var(--espaco-2) var(--espaco-4);
+  overflow-x: auto;
+  scrollbar-width: none;           /* esconde a barra de rolagem; o gesto continua funcionando */
+}
+.categorias ul::-webkit-scrollbar { display: none; }
+
+.categorias a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--altura-toque);
+  padding: 0 var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.categorias a[aria-current="true"] {
+  border-color: var(--cor-primaria);
+  background: var(--cor-primaria);
+  color: var(--cor-sobre-primaria);
+}
+
+/* ==========================================================================
+   Seções e itens
+   ========================================================================== */
+.cardapio {
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: 0 var(--espaco-4);
+}
+.cardapio:focus { outline: none; }
+
+.carregando,
+.aviso-erro {
+  padding: var(--espaco-6) var(--espaco-4);
+  text-align: center;
+}
+.aviso-erro { color: var(--cor-fechado-texto); font-weight: 600; }
+
+.secao {
+  padding-top: var(--espaco-5);
+  /* Ao pular para a seção, o título não fica escondido atrás da barra fixa. */
+  scroll-margin-top: var(--altura-categorias);
+}
+
+.secao__cabecalho {
+  position: relative;
+  margin-bottom: var(--espaco-3);
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+
+.secao__foto {
+  width: 100%;
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
+}
+
+.secao__titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+/* Com foto, o título vai por cima da imagem; o degradê escuro garante o contraste. */
+.secao__foto + .secao__titulo {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--espaco-6) var(--espaco-4) var(--espaco-3);
+  background: linear-gradient(to top, rgb(0 0 0 / 0.8), rgb(0 0 0 / 0));
+  color: #FFFFFF;
+}
+
+.itens {
+  display: grid;
+  gap: var(--espaco-3);
+}
+
+.item {
+  position: relative;
+  display: flex;
+  gap: var(--espaco-3);
+  height: 100%;
+  padding: var(--espaco-4);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  transition: border-color 0.15s;
+}
+.item:hover { border-color: var(--cor-destaque); }
+
+/* O foco aparece no card inteiro, não só no nome. */
+.item:has(.item__botao:focus-visible) {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+.item__texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.item__nome {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.item__botao {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.item__botao:focus-visible { outline: none; } /* o contorno vai no card (acima) */
+
+/* Estica a área clicável do botão sobre o card todo. */
+.item__botao::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--raio);
+}
+
+.item__descricao {
+  color: var(--cor-texto-suave);
+  /* No máximo 2 linhas no card; o texto completo aparece no painel do item. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item__preco {
+  margin-top: auto;
+  padding-top: var(--espaco-1);
+  color: var(--cor-primaria);
+  font-weight: 600;
+}
+
+.item__a-partir {
+  color: var(--cor-texto-suave);
+  font-weight: 400;
+}
+
+.item__foto {
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--raio);
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   Rodapé
+   ========================================================================== */
+.rodape {
+  max-width: var(--largura-max);
+  margin: var(--espaco-6) auto 0;
+  /* Espaço extra embaixo para a barra do carrinho (etapa 3) não cobrir o rodapé. */
+  padding: var(--espaco-5) var(--espaco-4) 7rem;
+  border-top: 1px solid var(--cor-borda);
+  color: var(--cor-texto-suave);
+  text-align: center;
+}
+
+.rodape__creditos a,
+.rodape__assinatura a {
+  color: inherit;
+}
+
+.rodape__assinatura {
+  margin-top: var(--espaco-3);
+}
+.rodape__assinatura a {
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+
+/* ==========================================================================
+   Telas maiores
+   ========================================================================== */
+@media (min-width: 768px) {
+  .topo__info {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .itens {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .secao__foto {
+    aspect-ratio: 16 / 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .topo__nome { font-size: 2.5rem; }
+
+  .secao__foto { aspect-ratio: 16 / 3; }
+
+  .itens {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

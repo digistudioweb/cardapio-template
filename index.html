@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Título e descrição ficam escritos aqui (e não só no JS) porque o Google e a
+       prévia de link do WhatsApp leem o HTML sem executar JavaScript. Trocar por cliente. -->
+  <title>Brasa &amp; Massa Pizzaria — Cardápio e pedidos</title>
+  <meta name="description" content="Cardápio da Brasa &amp; Massa Pizzaria em Ciudad del Este. Escolha sua pizza e peça pelo WhatsApp.">
+  <meta name="theme-color" content="#B42318">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&display=swap">
+  <link rel="stylesheet" href="css/estilos.css">
+
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="pular" href="#cardapio">Pular para o cardápio</a>
+
+  <header class="topo">
+    <img class="topo__capa" src="img/capa.jpg" alt="" width="1600" height="700">
+    <div class="topo__info">
+      <div class="topo__marca" aria-hidden="true" data-sigla></div>
+      <h1 class="topo__nome" data-nome>Brasa &amp; Massa Pizzaria</h1>
+      <p class="topo__slogan" data-slogan></p>
+      <p class="status" data-status role="status">Verificando horário…</p>
+      <ul class="topo__detalhes" data-detalhes role="list"></ul>
+    </div>
+  </header>
+
+  <nav class="categorias" aria-label="Categorias do cardápio">
+    <ul data-categorias role="list"></ul>
+  </nav>
+
+  <main id="cardapio" class="cardapio" data-secoes tabindex="-1">
+    <p class="carregando">Carregando cardápio…</p>
+  </main>
+
+  <footer class="rodape">
+    <p class="rodape__creditos" data-creditos></p>
+    <p class="rodape__assinatura">
+      Feito por <a href="https://instagram.com/digistudio.web" target="_blank" rel="noopener">Digi Studio</a>
+    </p>
+  </footer>
+
+  <noscript>
+    <p class="aviso-erro">Este cardápio precisa de JavaScript ativado para funcionar.</p>
+  </noscript>
+</body>
+</html>
