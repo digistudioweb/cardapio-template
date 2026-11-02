@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://DOMINIO/sitemap.xml
+Sitemap: https://digistudioweb.github.io/cardapio-template/sitemap.xml
