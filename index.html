@@ -86,6 +86,112 @@
     </div>
   </dialog>
 
+  <!-- Finalização: dados do cliente e envio para o WhatsApp (js/ui-checkout.js). -->
+  <dialog class="painel" data-painel-checkout aria-labelledby="checkout-titulo">
+    <form class="painel__form" data-form-checkout novalidate>
+      <button type="button" class="painel__fechar" data-acao="fechar" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+
+      <div class="painel__corpo" data-etapa-dados>
+        <div class="painel__intro">
+          <h2 class="painel__titulo" id="checkout-titulo" tabindex="-1" autofocus>Finalizar pedido</h2>
+        </div>
+
+        <div class="grupo">
+          <label class="grupo__titulo" for="cliente-nome">Seu nome</label>
+          <p class="grupo__erro" id="erro-nome" data-erro-campo="nome"></p>
+          <input class="campo" id="cliente-nome" name="nome" autocomplete="name" required
+            aria-describedby="erro-nome">
+        </div>
+
+        <fieldset class="grupo" data-campo-modo>
+          <legend class="grupo__titulo">Como quer receber?</legend>
+          <div class="opcoes">
+            <label class="opcao">
+              <input type="radio" name="modo" value="entrega" checked>
+              <span class="opcao__nome">Entrega <span class="opcao__detalhe" data-texto-taxa></span></span>
+            </label>
+            <label class="opcao" data-opcao-retirada>
+              <input type="radio" name="modo" value="retirada">
+              <span class="opcao__nome">Retirar no local <span class="opcao__detalhe">sem taxa de entrega</span></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="grupo" data-endereco>
+          <legend class="grupo__titulo">Endereço de entrega</legend>
+          <div class="campos">
+            <div>
+              <label for="cliente-endereco">Rua e número</label>
+              <p class="grupo__erro" id="erro-endereco" data-erro-campo="endereco"></p>
+              <input class="campo" id="cliente-endereco" name="endereco" autocomplete="street-address"
+                aria-describedby="erro-endereco">
+            </div>
+            <div>
+              <label for="cliente-bairro">Bairro</label>
+              <p class="grupo__erro" id="erro-bairro" data-erro-campo="bairro"></p>
+              <input class="campo" id="cliente-bairro" name="bairro" autocomplete="address-level3"
+                aria-describedby="erro-bairro">
+            </div>
+            <div>
+              <label for="cliente-referencia">Ponto de referência <span class="opcional">(opcional)</span></label>
+              <input class="campo" id="cliente-referencia" name="referencia" placeholder="Ex.: portão azul, perto da praça">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="grupo">
+          <legend class="grupo__titulo">Forma de pagamento</legend>
+          <p class="grupo__erro" id="erro-pagamento" data-erro-campo="pagamento"></p>
+          <div class="opcoes" data-pagamentos></div>
+          <div class="troco" data-troco hidden>
+            <label class="opcao">
+              <input type="checkbox" name="precisaTroco">
+              <span class="opcao__nome">Preciso de troco</span>
+            </label>
+            <div data-campo-troco hidden>
+              <label for="cliente-troco" data-rotulo-troco>Troco para quanto?</label>
+              <p class="grupo__erro" id="erro-troco" data-erro-campo="troco"></p>
+              <input class="campo" id="cliente-troco" name="troco" aria-describedby="erro-troco">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="grupo">
+          <h3 class="grupo__titulo">Resumo</h3>
+          <dl class="resumo">
+            <div class="resumo__linha"><dt>Subtotal</dt><dd data-checkout-subtotal></dd></div>
+            <div class="resumo__linha"><dt>Entrega</dt><dd data-checkout-taxa></dd></div>
+            <div class="resumo__linha resumo__linha--total"><dt>Total</dt><dd data-checkout-total></dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="painel__rodape painel__rodape--resumo" data-etapa-dados>
+        <p class="aviso-fechado" id="aviso-fechado" data-aviso-fechado hidden></p>
+        <button type="submit" class="botao-whatsapp" data-enviar aria-describedby="aviso-fechado">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+          <span data-texto-enviar>Enviar pedido no WhatsApp</span>
+        </button>
+      </div>
+
+      <!-- Depois de abrir o WhatsApp: instruções e opção de recomeçar. -->
+      <div class="painel__corpo sucesso" data-etapa-sucesso hidden>
+        <h2 class="painel__titulo" tabindex="-1" data-titulo-sucesso>Quase lá!</h2>
+        <ol class="sucesso__passos">
+          <li>No WhatsApp, confira a mensagem e toque em <strong>enviar</strong>.</li>
+          <li data-passo-localizacao>Depois, mande sua localização: toque no clipe (📎), escolha <strong>Localização</strong> e <strong>Enviar localização atual</strong>. É ela que o motoboy usa.</li>
+        </ol>
+        <p>O WhatsApp não abriu? <a data-link-whatsapp target="_blank" rel="noopener">Toque aqui para abrir</a>.</p>
+        <div class="resumo__botoes">
+          <button type="button" class="botao-secundario" data-acao="voltar">Voltar ao pedido</button>
+          <button type="button" class="botao-primario" data-acao="novo-pedido">Fazer novo pedido</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
   <noscript>
     <p class="aviso-erro">Este cardápio precisa de JavaScript ativado para funcionar.</p>
   </noscript>

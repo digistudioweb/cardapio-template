@@ -114,7 +114,7 @@ a { color: var(--cor-primaria); }
 .botao-primario {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--espaco-3);
   min-height: 48px;
   padding: 0 var(--espaco-5);
@@ -634,7 +634,8 @@ html:has(dialog[open]) { overflow: hidden; }
   background: var(--cor-superficie);
 }
 
-.painel__adicionar { flex: 1; }
+/* Botões com texto + preço: um em cada ponta. */
+.painel__adicionar { flex: 1; justify-content: space-between; }
 
 /* ==========================================================================
    Carrinho: barra fixa, aviso e lista
@@ -653,6 +654,7 @@ html:has(dialog[open]) { overflow: hidden; }
   max-width: 560px;
   margin: 0 auto;
   display: flex;
+  justify-content: space-between;
   box-shadow: 0 4px 16px rgb(180 35 24 / 0.3);
 }
 
@@ -749,6 +751,70 @@ html:has(dialog[open]) { overflow: hidden; }
   gap: var(--espaco-2);
 }
 .resumo__botoes > * { flex: 1 1 10rem; }
+
+/* ==========================================================================
+   Finalização
+   ========================================================================== */
+.campos {
+  display: grid;
+  gap: var(--espaco-3);
+}
+.campos label,
+.troco label[for] { display: block; margin-bottom: var(--espaco-1); font-weight: 600; }
+
+.opcional { color: var(--cor-texto-suave); font-weight: 400; }
+
+.campo[aria-invalid="true"] { border: 2px solid var(--cor-fechado-texto); }
+
+.troco { margin-top: var(--espaco-2); }
+
+.resumo { margin: 0; display: grid; gap: var(--espaco-1); }
+.resumo dd { margin: 0; font-weight: 600; }
+.resumo__linha--total {
+  padding-top: var(--espaco-2);
+  border-top: 1px solid var(--cor-borda);
+  font-size: 1.25rem;
+}
+
+.aviso-fechado {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-fechado-fundo);
+  color: var(--cor-fechado-texto);
+  font-weight: 600;
+}
+
+/* O verde do WhatsApp é exclusivo deste botão. Texto escuro: branco no verde dá só 2:1. */
+.botao-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-2);
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-whatsapp);
+  color: var(--cor-sobre-whatsapp);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.botao-whatsapp:hover { filter: brightness(0.95); }
+.botao-whatsapp[aria-disabled="true"] {
+  background: var(--cor-borda);
+  color: var(--cor-texto-suave);
+  cursor: not-allowed;
+}
+
+.sucesso {
+  display: grid;
+  gap: var(--espaco-4);
+  padding: var(--espaco-6) var(--espaco-4);
+  padding-right: calc(var(--altura-toque) + var(--espaco-4));
+}
+.sucesso__passos { display: grid; gap: var(--espaco-2); margin: 0; padding-left: 1.25rem; }
+.sucesso .painel__titulo:focus { outline: none; }
 
 /* ==========================================================================
    Rodapé

@@ -14,6 +14,7 @@ import { iniciarPainelItem, abrirPainelItem } from './ui-item.js';
 import { descreverLinha } from './pedido.js';
 import * as carrinho from './carrinho.js';
 import { iniciarUiCarrinho, avisar } from './ui-carrinho.js';
+import { iniciarCheckout, abrirCheckout, atualizarDisponibilidade } from './ui-checkout.js';
 
 async function iniciar() {
   let cardapio;
@@ -39,7 +40,8 @@ async function iniciar() {
   acompanharCategoriaAtual();
 
   carrinho.iniciarCarrinho(cardapio);
-  iniciarUiCarrinho(cardapio);
+  iniciarCheckout(cardapio);
+  iniciarUiCarrinho(cardapio, { aoFinalizar: () => abrirCheckout(document.querySelector('[data-abrir-carrinho]')) });
   iniciarPainelItem(cardapio, (selecao) => {
     carrinho.adicionar(selecao);
     avisar(`${descreverLinha(selecao, cardapio).titulo} foi para o carrinho`);
@@ -53,7 +55,11 @@ async function iniciar() {
 
   // O status muda sozinho com o tempo (abre às 17:30, fecha às 01:30),
   // então recalculamos a cada minuto para quem deixa a página aberta.
-  const atualizarStatus = () => renderizarStatus(calcularStatus(restaurante));
+  const atualizarStatus = () => {
+    const status = calcularStatus(restaurante);
+    renderizarStatus(status);
+    atualizarDisponibilidade(status);
+  };
   atualizarStatus();
   setInterval(atualizarStatus, 60 * 1000);
 }

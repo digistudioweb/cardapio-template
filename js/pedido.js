@@ -108,6 +108,16 @@ export function descreverLinha(selecao, cardapio) {
   return { titulo, detalhes, observacao: selecao.observacao };
 }
 
+// Subtotal, taxa e total do pedido, conforme entrega ou retirada.
+// Com taxa por bairro, a taxa é null ("a confirmar") e o total fica "subtotal + entrega".
+export function calcularTotais(subtotal, entrega, modo) {
+  if (modo === 'retirada') return { subtotal, taxa: 0, total: subtotal, taxaAConfirmar: false };
+  if (entrega?.tipo === 'fixa') {
+    return { subtotal, taxa: entrega.taxa, total: subtotal + entrega.taxa, taxaAConfirmar: false };
+  }
+  return { subtotal, taxa: null, total: subtotal, taxaAConfirmar: true };
+}
+
 // Texto curto da regra do grupo, mostrado ao lado do título.
 export function regraDoGrupo(grupo) {
   const min = grupo.min ?? 0;
