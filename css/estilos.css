@@ -755,14 +755,16 @@ html:has(dialog[open]) { overflow: hidden; }
 /* ==========================================================================
    Finalização
    ========================================================================== */
-.campos {
-  display: grid;
-  gap: var(--espaco-3);
-}
-.campos label,
 .troco label[for] { display: block; margin-bottom: var(--espaco-1); font-weight: 600; }
 
-.opcional { color: var(--cor-texto-suave); font-weight: 400; }
+.opcional { color: var(--cor-texto-suave); font-family: var(--fonte-texto); font-size: 1rem; font-weight: 400; }
+
+.nota-localizacao {
+  margin-bottom: var(--espaco-4);
+  padding: var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-fundo);
+}
 
 .campo[aria-invalid="true"] { border: 2px solid var(--cor-fechado-texto); }
 

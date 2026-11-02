@@ -24,7 +24,7 @@ Template de cardápio digital com pedido pelo WhatsApp, para restaurantes e deli
    - observação livre (ex.: sem cebola);
    - quantidade e botão "Adicionar".
 4. Carrinho fixo embaixo (quantidade e total), que abre a lista para editar ou remover.
-5. Finalização: nome, entrega ou retirada, endereço (se entrega), forma de pagamento e troco.
+5. Finalização: nome, entrega ou retirada, complemento/referência opcional (se entrega), forma de pagamento e troco. Não pedir rua nem bairro digitados: o endereço chega pela localização do WhatsApp.
 6. Botão "Enviar pedido no WhatsApp": monta a mensagem formatada (itens, escolhas, adicionais, observações, subtotal, taxa, total, dados do cliente) e abre `https://wa.me/<numero>?text=<encodeURIComponent(mensagem)>`.
    - A localização não vai no link. A mensagem termina pedindo para o cliente mandar a localização do WhatsApp em seguida, porque é o que o motoboy usa.
    - Se a taxa varia por bairro, mostrar "taxa a confirmar".

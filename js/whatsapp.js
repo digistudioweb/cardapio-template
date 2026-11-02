@@ -10,7 +10,7 @@ import { descreverLinha } from './pedido.js';
  * pedido = {
  *   linhas,                     // linhas do carrinho (com .unitario)
  *   totais,                     // de calcularTotais()
- *   cliente: { nome, modo: 'entrega' | 'retirada', endereco, bairro, referencia },
+ *   cliente: { nome, modo: 'entrega' | 'retirada', referencia },
  *   pagamento: { nome, troco: 'BRL' | 'PYG' | undefined },
  *   trocoPara,                  // centavos (BRL) ou guaranis (PYG), ou null
  * }
@@ -43,9 +43,8 @@ export function montarMensagem(restaurante, cardapio, pedido) {
   if (cliente.modo === 'retirada') {
     partes.push('*Vou retirar no local*');
   } else {
-    partes.push(`*Endereço:* ${cliente.endereco}`);
-    partes.push(`*Bairro:* ${cliente.bairro}`);
-    if (cliente.referencia) partes.push(`*Referência:* ${cliente.referencia}`);
+    partes.push('*Para entrega*'); // o endereço vem pela localização (última linha da mensagem)
+    if (cliente.referencia) partes.push(`*Complemento:* ${cliente.referencia}`);
   }
 
   let textoPagamento = `*Pagamento:* ${pagamento.nome}`;

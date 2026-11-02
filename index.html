@@ -163,27 +163,18 @@
           </div>
         </fieldset>
 
-        <fieldset class="grupo" data-endereco>
-          <legend class="grupo__titulo">Endereço de entrega</legend>
-          <div class="campos">
-            <div>
-              <label for="cliente-endereco">Rua e número</label>
-              <p class="grupo__erro" id="erro-endereco" data-erro-campo="endereco"></p>
-              <input class="campo" id="cliente-endereco" name="endereco" autocomplete="street-address"
-                aria-describedby="erro-endereco">
-            </div>
-            <div>
-              <label for="cliente-bairro">Bairro</label>
-              <p class="grupo__erro" id="erro-bairro" data-erro-campo="bairro"></p>
-              <input class="campo" id="cliente-bairro" name="bairro" autocomplete="address-level3"
-                aria-describedby="erro-bairro">
-            </div>
-            <div>
-              <label for="cliente-referencia">Ponto de referência <span class="opcional">(opcional)</span></label>
-              <input class="campo" id="cliente-referencia" name="referencia" placeholder="Ex.: portão azul, perto da praça">
-            </div>
-          </div>
-        </fieldset>
+        <!-- Sem campos de rua e bairro: o endereço chega pela localização do WhatsApp,
+             que é o que o motoboy usa. Só pedimos o que a localização não mostra. -->
+        <div class="grupo" data-endereco>
+          <p class="nota-localizacao">
+            <strong>Endereço:</strong> depois de enviar o pedido, você manda sua localização pelo WhatsApp.
+          </p>
+          <label class="grupo__titulo" for="cliente-referencia">
+            Complemento ou referência <span class="opcional">(opcional)</span>
+          </label>
+          <input class="campo" id="cliente-referencia" name="referencia"
+            placeholder="Ex.: apto 302, casa de portão azul">
+        </div>
 
         <fieldset class="grupo">
           <legend class="grupo__titulo">Forma de pagamento</legend>

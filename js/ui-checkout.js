@@ -1,4 +1,5 @@
-// Finalização: nome, entrega ou retirada, endereço, pagamento, troco e envio pelo WhatsApp.
+// Finalização: nome, entrega ou retirada, complemento, pagamento, troco e envio pelo WhatsApp.
+// O endereço não é digitado: chega pela localização do WhatsApp, enviada logo depois do pedido.
 
 import { formatarReais, lerReais, lerGuaranis } from './dinheiro.js';
 import { escapar } from './html.js';
@@ -85,8 +86,6 @@ function lerFormulario() {
   return {
     nome: (dados.get('nome') ?? '').trim(),
     modo: dados.get('modo') ?? 'entrega',
-    endereco: (dados.get('endereco') ?? '').trim(),
-    bairro: (dados.get('bairro') ?? '').trim(),
     referencia: (dados.get('referencia') ?? '').trim(),
     pagamento,
     precisaTroco: Boolean(pagamento?.troco) && dados.get('precisaTroco') === 'on',
@@ -131,10 +130,6 @@ function atualizar() {
 function validar(dados, totais) {
   const erros = {};
   if (dados.nome.length < 2) erros.nome = 'Digite seu nome.';
-  if (dados.modo === 'entrega') {
-    if (dados.endereco.length < 3) erros.endereco = 'Digite a rua e o número.';
-    if (dados.bairro.length < 2) erros.bairro = 'Digite o bairro.';
-  }
   if (!dados.pagamento) erros.pagamento = 'Escolha a forma de pagamento.';
 
   let trocoPara = null;
@@ -189,7 +184,7 @@ function aoEnviar(evento) {
   // Fechado: não envia. O aviso já está visível e ligado ao botão por aria-describedby.
   if (!atualizarDisponibilidade().aberto) return;
 
-  ['nome', 'endereco', 'bairro', 'pagamento', 'troco'].forEach(limparErro);
+  ['nome', 'pagamento', 'troco'].forEach(limparErro);
   const { erros, trocoPara } = validar(dados, totais);
   if (Object.keys(erros).length > 0) {
     mostrarErros(erros);
@@ -241,10 +236,10 @@ function mostrarEtapa(etapa) {
    --------------------------------------------------------------------------- */
 
 function salvarDadosDoCliente(dados) {
-  const { nome, modo, endereco, bairro, referencia } = dados;
+  const { nome, modo, referencia } = dados;
   try {
     localStorage.setItem(chaveCliente, JSON.stringify({
-      nome, modo, endereco, bairro, referencia, pagamento: dados.pagamento?.id,
+      nome, modo, referencia, pagamento: dados.pagamento?.id,
     }));
   } catch {
     // Sem localStorage, só não lembramos os dados; o pedido segue normalmente.
@@ -260,7 +255,7 @@ function preencherComDadosSalvos() {
   }
   if (!salvos || typeof salvos !== 'object') return;
 
-  for (const campo of ['nome', 'endereco', 'bairro', 'referencia']) {
+  for (const campo of ['nome', 'referencia']) {
     const elemento = form.elements[campo];
     if (!elemento.value && typeof salvos[campo] === 'string') elemento.value = salvos[campo];
   }
